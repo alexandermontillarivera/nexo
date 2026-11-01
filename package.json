@@ -8,9 +8,11 @@
 		"build": "astro build",
 		"preview": "astro preview",
 		"format": "prettier --write .",
-		"format:check": "prettier --check ."
+		"format:check": "prettier --check .",
+		"start": "node ./dist/server/entry.mjs"
 	},
 	"dependencies": {
+		"@astrojs/node": "11.1.9",
 		"astro": "7.4.4"
 	},
 	"devDependencies": {
