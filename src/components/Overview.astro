@@ -1,0 +1,215 @@
+<section id="overview">
+	<div class="stats-grid">
+		<article class="stat-card">
+			<div class="stat-top">
+				Envíos activos<i data-icon="box"></i>
+			</div>
+			<div class="stat-value" id="active-count">
+				4
+			</div>
+			<div class="stat-bottom">
+				<span class="positive">↗ Operación en marcha</span>
+				<span>hoy</span>
+			</div>
+			<div class="sparkline">
+				<svg viewBox="0 0 180 35">
+					<path d="M0 30 L20 26 38 29 57 17 77 20 98 10 117 14 138 5 156 9 180 1"></path>
+				</svg>
+			</div>
+		</article>
+		<article class="stat-card">
+			<div class="stat-top">
+				Camiones disponibles<i data-icon="truck"></i>
+			</div>
+			<div class="stat-value">
+				3<span>/ 8</span>
+			</div>
+			<div class="stat-bottom">
+				<span>
+					<b class="dot green"></b> Listos para salir
+				</span>
+			</div>
+			<div class="capacity">
+				<b></b>
+				<b></b>
+				<b></b>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+				<i></i>
+			</div>
+		</article>
+		<article class="stat-card">
+			<div class="stat-top">
+				Entregas completadas<i data-icon="check"></i>
+			</div>
+			<div class="stat-value" id="delivered-count">
+				2
+			</div>
+			<div class="stat-bottom">
+				<span class="positive">100% de entregas a tiempo</span>
+			</div>
+			<span class="stat-watermark">✓</span>
+		</article>
+		<article class="stat-card dark">
+			<div class="stat-top">
+				Kilómetros recorridos<i data-icon="route"></i>
+			</div>
+			<div class="stat-value">
+				1,284<span>km</span>
+			</div>
+			<div class="stat-bottom">
+				<span>Conectando nuevos destinos</span>
+			</div>
+			<svg class="road-art" viewBox="0 0 150 90">
+				<path d="M15 100 Q150 45 65 35 T100 -15"></path>
+				<path d="M35 100 Q170 45 85 35 T120 -15"></path>
+			</svg>
+		</article>
+	</div>
+	<div class="middle-grid">
+		<article class="card map-card">
+			<div class="card-heading">
+				<div>
+					<h2>En ruta</h2>
+					<p>Una mirada a tus próximos destinos</p>
+				</div>
+				<span class="live-pill">
+					<b></b> Simulación
+				</span>
+			</div>
+			<div class="map">
+				<svg
+					viewBox="0 0 760 310"
+					role="img"
+					aria-label="Mapa esquemático de rutas entre Santo Domingo, Santiago, La Vega y Punta Cana"
+				>
+					<defs>
+						<pattern
+							id="mapGrid"
+							width="38"
+							height="38"
+							patternUnits="userSpaceOnUse"
+						>
+							<path
+								d="M38 0H0V38"
+								fill="none"
+								stroke="#e0e7df"
+								stroke-width=".7"
+							></path>
+						</pattern>
+					</defs>
+					<rect width="760" height="310" fill="#edf1ea"></rect>
+					<path
+						d="M0 245 Q125 245 160 266 T340 285 T540 230 T760 185 V310 H0"
+						fill="#dae8e7"
+					></path>
+					<path
+						d="M0 25 L170 85 250 10 410 60 530 10 760 65 M0 140 L210 112 355 160 530 70 760 130 M80 0 L150 160 125 310 M350 0 L320 180 410 310 M600 0 L520 170 610 310"
+						fill="none"
+						stroke="#fff"
+						stroke-width="13"
+					></path>
+					<rect
+						width="760"
+						height="310"
+						fill="url(#mapGrid)"
+						opacity=".65"
+					></rect>
+					<path
+						d="M220 80 Q250 132 320 155 T407 227 L640 175"
+						fill="none"
+						stroke="#b7c8b5"
+						stroke-width="5"
+					></path>
+					<path
+						d="M220 80 Q250 132 320 155 T407 227 L640 175"
+						fill="none"
+						stroke="#47836b"
+						stroke-width="2.5"
+						stroke-dasharray="5 5"
+					></path>
+					<g fill="#fff" stroke="#397a5a" stroke-width="3">
+						<circle cx="220" cy="80" r="6"></circle>
+						<circle cx="320" cy="155" r="6"></circle>
+						<circle cx="407" cy="227" r="7"></circle>
+						<circle cx="640" cy="175" r="6"></circle>
+					</g>
+					<g font-family="system-ui" fill="#58655d" font-size="12">
+						<text x="176" y="57">
+							Santiago
+						</text>
+						<text x="340" y="147">
+							La Vega
+						</text>
+						<text x="345" y="256">
+							Santo Domingo
+						</text>
+						<text x="610" y="153">
+							Punta Cana
+						</text>
+						<text
+							x="45"
+							y="220"
+							fill="#9aa79a"
+							letter-spacing="3"
+							font-size="10"
+						>
+							REPÚBLICA DOMINICANA
+						</text>
+					</g>
+					<g transform="translate(270 114)">
+						<rect
+							x="-16"
+							y="-15"
+							width="32"
+							height="30"
+							rx="10"
+							fill="#397a5a"
+						></rect>
+						<path
+							d="M-8 -5 H2 V5 H-8 Z M2 -2 H7 L10 2 V5 H2 M-4 5 V8 M6 5 V8"
+							stroke="white"
+							fill="none"
+							stroke-width="1.7"
+						></path>
+					</g>
+					<g transform="translate(530 199)">
+						<rect
+							x="-16"
+							y="-15"
+							width="32"
+							height="30"
+							rx="10"
+							fill="#397a5a"
+						></rect>
+						<path
+							d="M-8 -5 H2 V5 H-8 Z M2 -2 H7 L10 2 V5 H2 M-4 5 V8 M6 5 V8"
+							stroke="white"
+							fill="none"
+							stroke-width="1.7"
+						></path>
+					</g>
+				</svg>
+				<div class="map-key">
+					<b class="dot green"></b> 2 camiones en tránsito{" "}
+					<span>Mapa ilustrativo</span>
+				</div>
+			</div>
+		</article>
+		<article class="card agenda">
+			<div class="card-heading">
+				<div>
+					<h2>Próximas salidas</h2>
+					<p>El siguiente paso de tu operación</p>
+				</div>
+				<i data-icon="clock"></i>
+			</div>
+			<div id="departures"></div>
+			<div class="agenda-foot">
+				<i data-icon="check"></i> Todo listo para seguir avanzando
+			</div>
+		</article>
+	</div>
+</section>

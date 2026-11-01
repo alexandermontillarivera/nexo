@@ -1,0 +1,12 @@
+---
+import DashboardLayout from "@/layouts/DashboardLayout.astro"
+import OperationsTable from "@/components/OperationsTable.astro"
+---
+
+<DashboardLayout
+	view="routes"
+	title="Caminos que conectan."
+	subtitle="Orígenes y destinos de tu operación."
+>
+	<OperationsTable view="routes" />
+</DashboardLayout>

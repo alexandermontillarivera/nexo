@@ -1,0 +1,293 @@
+---
+import "@/styles/global.css"
+import CatalogForm from "@/components/CatalogForm.astro"
+import { catalogActions } from "@/scripts/catalog/config.js"
+import { ClientRouter } from "astro:transitions"
+const {
+	view = "overview",
+	title = "Todo en movimiento.",
+	subtitle = "Una vista clara de lo que pasa, de principio a destino.",
+} = Astro.props
+const labels = {
+	overview: "Resumen",
+	shipments: "Envíos",
+	fleet: "Flota",
+	drivers: "Choferes",
+	routes: "Rutas",
+	goods: "Mercancías",
+}
+const paths = {
+	overview: "/",
+	shipments: "/envios",
+	fleet: "/flota",
+	drivers: "/choferes",
+	routes: "/rutas",
+	goods: "/mercancias",
+}
+const nav = [
+	["overview", "Resumen", "grid"],
+	["shipments", "Envíos", "box"],
+	["fleet", "Flota", "truck"],
+	["drivers", "Choferes", "users"],
+	["routes", "Rutas", "route"],
+	["goods", "Mercancías", "layers"],
+]
+---
+
+<!doctype html>
+<html lang="es" transition:animate="none">
+	<head>
+		<ClientRouter fallback="swap" />
+		<meta charset="UTF-8" />
+		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content="#f5f6f8" />
+		<title>Nexo — {labels[view]}</title>
+	</head>
+	<body data-view={view}>
+		<aside class="sidebar">
+			<a class="brand" href="/" aria-label="Nexo inicio">
+				<span class="brand-symbol">n</span>nexo<span class="brand-dot">.</span>
+			</a>
+			<div class="workspace">
+				<span class="workspace-icon">N</span>
+				<div>
+					Nexo Transportes<small>Espacio de trabajo</small>
+				</div>
+			</div>
+			<p class="nav-label">OPERACIONES</p>
+			<nav>
+				{nav.map(([id, label, icon]) => (
+					<a
+						href={paths[id]}
+						data-view={id}
+						aria-current={id === view ? "page" : undefined}
+						class:list={["nav-item", { active: id === view }]}
+					>
+						<i data-icon={icon} />
+						{label}
+						{id === "shipments" && <span class="nav-count">6</span>}
+					</a>
+				))}
+			</nav>
+			<div class="sidebar-bottom">
+				<div class="help-card">
+					<span class="help-icon">✧</span>
+					<strong>Todo conectado.</strong>
+					<p>
+						Menos coordinación.
+						<br />
+						Más movimiento.
+					</p>
+					<span class="help-line"></span>
+				</div>
+				<div class="profile">
+					<span class="avatar">AM</span>
+					<div>
+						<strong>Ana Martínez</strong>
+						<small>Administradora</small>
+					</div>
+					<span class="online-dot"></span>
+				</div>
+			</div>
+		</aside>
+		<div class="app">
+			<header class="topbar">
+				<div class="header-location">
+					<button
+						class="icon-button mobile-menu-button"
+						id="open-mobile-menu"
+						aria-label="Abrir menú de navegación"
+						aria-controls="mobile-menu"
+						aria-expanded="false"
+					>
+						<i data-icon="menu"></i>
+					</button>
+					<div class="breadcrumb">
+						Workspace <span>/</span>
+						<strong id="crumb">{labels[view]}</strong>
+					</div>
+				</div>
+				<div class="top-actions">
+					<button
+						class="icon-button"
+						id="notifications"
+						aria-label="Ver notificaciones"
+					>
+						<i data-icon="bell"></i>
+						<span class="notification-dot"></span>
+					</button>
+					<span class="avatar small">AM</span>
+				</div>
+			</header>
+			<main>
+				<div class="page-heading">
+					<div>
+						<div class="eyebrow">TU OPERACIÓN, EN UN SOLO LUGAR</div>
+						<h1 id="page-title">{title}</h1>
+						<p id="page-subtitle">{subtitle}</p>
+					</div>
+					<button
+						class="primary"
+						id={catalogActions[view] ? "new-resource" : "new-shipment"}
+					>
+						<i data-icon="plus"></i>{" "}
+						{catalogActions[view]?.label || "Nuevo envío"}
+					</button>
+				</div>
+				<slot />
+				<footer>
+					Hecho para que todo llegue a su lugar.
+					<span>NEXO TRANSPORTES © 2026</span>
+				</footer>
+			</main>
+		</div>
+
+		<dialog
+			id="mobile-menu"
+			class="mobile-drawer"
+			aria-label="Menú de navegación"
+		>
+			<div class="mobile-drawer-heading">
+				<a class="mobile-brand" href="/" aria-label="Nexo inicio">
+					<span class="brand-symbol">n</span>nexo.
+				</a>
+				<button
+					class="icon-button"
+					id="close-mobile-menu"
+					aria-label="Cerrar menú"
+				>
+					<i data-icon="close"></i>
+				</button>
+			</div>
+			<p class="mobile-workspace">Nexo Transportes</p>
+			<p class="nav-label">OPERACIONES</p>
+			<nav aria-label="Navegación principal móvil">
+				{nav.map(([id, label, icon]) => (
+					<a
+						href={paths[id]}
+						data-view={id}
+						aria-current={id === view ? "page" : undefined}
+						class:list={["nav-item", { active: id === view }]}
+					>
+						<i data-icon={icon} />
+						{label}
+					</a>
+				))}
+			</nav>
+			<div class="mobile-drawer-profile">
+				<span class="avatar">AM</span>
+				<div>
+					<strong>Ana Martínez</strong>
+					<small>Administradora</small>
+				</div>
+			</div>
+		</dialog>
+		<dialog id="shipment-dialog">
+			<form id="shipment-form">
+				<div class="dialog-heading">
+					<div>
+						<span class="eyebrow">UN NUEVO DESTINO</span>
+						<h2>Programar envío</h2>
+					</div>
+					<button
+						type="button"
+						class="icon-button close-dialog"
+						aria-label="Cerrar"
+					>
+						✕
+					</button>
+				</div>
+				<p class="dialog-intro">
+					Define la ruta. Nosotros te ayudamos a organizar el resto.
+				</p>
+				<label>
+					Cliente
+					<input
+						name="client"
+						required
+						maxlength="70"
+						placeholder="Nombre de la empresa"
+					/>
+				</label>
+				<div class="form-grid">
+					<label>
+						Origen
+						<select name="origin">
+							<option>Santo Domingo</option>
+							<option>Santiago</option>
+							<option>La Vega</option>
+							<option>Punta Cana</option>
+						</select>
+					</label>
+					<label>
+						Destino
+						<select name="destination">
+							<option>Santiago</option>
+							<option>Punta Cana</option>
+							<option>La Vega</option>
+							<option>Santo Domingo</option>
+						</select>
+					</label>
+				</div>
+				<div class="form-grid">
+					<label>
+						Mercancía
+						<select name="goods">
+							<option>Productos de consumo</option>
+							<option>Materiales de construcción</option>
+							<option>Equipos electrónicos</option>
+							<option>Alimentos refrigerados</option>
+						</select>
+					</label>
+					<label>
+						Peso (kg)
+						<input
+							type="number"
+							name="weight"
+							min="1"
+							max="20000"
+							required
+							placeholder="2500"
+						/>
+					</label>
+				</div>
+				<div class="form-grid">
+					<label>
+						Chofer y camión
+						<select name="driver">
+							<option value="2">Pedro Ramírez · NX-003</option>
+							<option value="3">Luis Méndez · NX-004</option>
+							<option value="4">María Santos · NX-005</option>
+						</select>
+					</label>
+					<label>
+						Salida
+						<input type="datetime-local" name="departure" required />
+					</label>
+				</div>
+				<label>
+					Llegada estimada
+					<input type="datetime-local" name="arrival" required />
+				</label>
+				<p class="form-error" id="form-error" role="alert"></p>
+				<div class="dialog-actions">
+					<button type="button" class="secondary close-dialog">
+						Cancelar
+					</button>
+					<button class="primary" type="submit">
+						Crear envío <span>↗</span>
+					</button>
+				</div>
+			</form>
+		</dialog>
+		<CatalogForm view={view} />
+		<dialog id="detail-dialog">
+			<div id="detail-content"></div>
+		</dialog>
+		<div class="toast" id="toast" role="status"></div>
+		<script>
+			import "@/scripts/app.js"
+		</script>
+	</body>
+</html>

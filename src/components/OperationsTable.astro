@@ -1,0 +1,77 @@
+---
+import { seed } from "@/scripts/data/demo.js"
+import { buildOperationsTable } from "@/scripts/tables/model.js"
+const { overview = false, view = overview ? "overview" : "shipments" } =
+	Astro.props
+const table = buildOperationsTable(view, seed)
+---
+
+<section
+	class:list={[
+		"card",
+		"shipment-section",
+		{ "catalog-table": !table.isShipments },
+	]}
+	id="shipment-section"
+>
+	<div class="table-header">
+		<div class="card-heading">
+			<div>
+				<h2 id="table-title">
+					{table.title} <span class="count">{table.total}</span>
+				</h2>
+				<p id="table-subtitle">
+					{table.isShipments
+						? "Cada carga, bajo control."
+						: "Información de referencia de tu operación."}
+				</p>
+			</div>
+			<a href="/envios" class="text-button" id="see-all" hidden={!overview}>
+				Ver todos los envíos <span>↗</span>
+			</a>
+		</div>
+		<div class="table-toolbar">
+			<div
+				class="tabs"
+				hidden={!table.isShipments}
+				role="group"
+				aria-label="Filtrar envíos"
+			>
+				<button class="selected" data-filter="Todos">
+					Todos
+				</button>
+				<button data-filter="En tránsito">En tránsito</button>
+				<button data-filter="Programado">Programados</button>
+				<button data-filter="Entregado">Entregados</button>
+			</div>
+			<label class="search">
+				<i data-icon="search"></i>
+				<input
+					id="search"
+					placeholder={
+						table.isShipments ? "Buscar envío…" : "Buscar en el catálogo…"
+					}
+					aria-label={table.isShipments ? "Buscar envío" : "Buscar en la tabla"}
+				/>
+			</label>
+		</div>
+	</div>
+	<div class="table-scroll">
+		<table>
+			<thead id="table-head">
+				<tr>
+					{table.heads.map((heading) => (
+						<th scope="col">{heading}</th>
+					))}
+				</tr>
+			</thead>
+			<tbody id="table-body" set:html={table.rows.join("")} />
+		</table>
+	</div>
+	<div class="table-footer">
+		<span id="results-label">
+			{table.total} {table.isShipments ? "envíos" : "registros"}
+		</span>
+		<span>Nexo · Logística con claridad</span>
+	</div>
+</section>

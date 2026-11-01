@@ -1,0 +1,67 @@
+---
+import { catalogActions } from "@/scripts/catalog/config.js"
+const { view } = Astro.props
+const action = catalogActions[view]
+---
+
+{action && (
+	<dialog id="catalog-dialog" aria-labelledby="catalog-form-title">
+		<form id="catalog-form">
+			<div class="dialog-heading">
+				<div>
+					<span class="eyebrow">
+						{view === "fleet"
+							? "FLOTA"
+							: view === "drivers"
+								? "CHOFERES"
+								: view === "routes"
+									? "RUTAS"
+									: "MERCANCÍAS"}
+					</span>
+					<h2 id="catalog-form-title">{action.title}</h2>
+				</div>
+				<button
+					type="button"
+					class="icon-button"
+					data-close-catalog
+					aria-label="Cerrar"
+				>
+					✕
+				</button>
+			</div>
+			<p class="dialog-intro">{action.description}</p>
+			{action.fields.map((field) => (
+				<label>
+					{field.label}
+					{field.optional && <span class="optional-label"> · Opcional</span>}
+					{field.options ? (
+						<select name={field.name} required>
+							{field.options.map((option) => (
+								<option>{option}</option>
+							))}
+						</select>
+					) : (
+						<input
+							name={field.name}
+							type={field.type || "text"}
+							placeholder={field.placeholder}
+							min={field.min}
+							max={field.max}
+							maxlength={field.maxLength}
+							required={!field.optional}
+						/>
+					)}
+				</label>
+			))}
+			<p class="form-error" id="catalog-error" role="alert"></p>
+			<div class="dialog-actions">
+				<button type="button" class="secondary" data-close-catalog>
+					Cancelar
+				</button>
+				<button type="submit" class="primary">
+					Guardar
+				</button>
+			</div>
+		</form>
+	</dialog>
+)}
