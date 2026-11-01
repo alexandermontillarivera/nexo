@@ -1,4 +1,4 @@
-const icons = {
+const icons: Record<string, string> = {
 	menu: "M4 6h16 M4 12h16 M4 18h16",
 	close: "m6 6 12 12 M18 6 6 18",
 	grid: "M3 3h7v7H3z M14 3h7v7h-7z M3 14h7v7H3z M14 14h7v7h-7z",
@@ -18,9 +18,9 @@ const icons = {
 }
 export function initializeIcons() {
 	document
-		.querySelectorAll("[data-icon]")
+		.querySelectorAll<HTMLElement>("[data-icon]")
 		.forEach(
 			(el) =>
-				(el.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${icons[el.dataset.icon] || icons.box}"/></svg>`),
+				(el.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${icons[el.dataset.icon || "box"] || icons.box}"/></svg>`),
 		)
 }

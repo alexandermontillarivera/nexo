@@ -1,30 +1,39 @@
+import type { View, Refresh } from "@/types/logistics"
 import { navigate } from "astro:transitions/client"
-import { shipments } from "@/scripts/data/shipment-store.js"
-import { persist } from "@/scripts/data/shipment-store.js"
-import { toast } from "@/scripts/ui/toast.js"
-import { $ } from "@/scripts/utils/dom.js"
+import { shipments } from "@/scripts/data/shipment-store.ts"
+import { persist } from "@/scripts/data/shipment-store.ts"
+import { toast } from "@/scripts/ui/toast.ts"
+import { $, formValues } from "@/scripts/utils/dom.ts"
 
-export function initializeShipmentForm({ view, onChange }) {
-	const trigger = $("#new-shipment")
+export function initializeShipmentForm({
+	view,
+	onChange,
+}: {
+	view: View
+	onChange: Refresh
+}) {
+	const trigger = document.querySelector<HTMLButtonElement>("#new-shipment")
 	if (!trigger) return
 	trigger.onclick = () => {
-		const form = $("#shipment-form")
+		const form = $<HTMLFormElement>("#shipment-form")
 		form.reset()
 		$("#form-error").textContent = ""
-		const localInput = (d) => {
+		const localInput = (d: Date) => {
 			const x = new Date(d.getTime() - d.getTimezoneOffset() * 60000)
 			return x.toISOString().slice(0, 16)
 		}
 		const now = new Date()
-		form.elements.departure.value = localInput(
+		$<HTMLInputElement>('#shipment-form [name="departure"]').value = localInput(
 			new Date(now.getTime() + 3600000),
 		)
-		form.elements.arrival.value = localInput(new Date(now.getTime() + 14400000))
-		$("#shipment-dialog").showModal()
+		$<HTMLInputElement>('#shipment-form [name="arrival"]').value = localInput(
+			new Date(now.getTime() + 14400000),
+		)
+		$<HTMLDialogElement>("#shipment-dialog").showModal()
 	}
-	$("#shipment-form").onsubmit = (e) => {
+	$<HTMLFormElement>("#shipment-form").onsubmit = (e) => {
 		e.preventDefault()
-		const values = Object.fromEntries(new FormData(e.target))
+		const values = formValues($<HTMLFormElement>("#shipment-form"))
 		const error = $("#form-error")
 		if (!values.client.trim()) {
 			error.textContent = "Escribe el nombre del cliente."
@@ -58,7 +67,11 @@ export function initializeShipmentForm({ view, onChange }) {
 		}
 		const id = `NX-${Math.max(1048, ...shipments.map((s) => Number(s.id.split("-")[1]) || 0)) + 1}`
 		shipments.unshift({
-			...values,
+			origin: values.origin,
+			destination: values.destination,
+			goods: values.goods,
+			departure: values.departure,
+			arrival: values.arrival,
 			client: values.client.trim(),
 			driver,
 			weight: Number(values.weight),
@@ -70,7 +83,7 @@ export function initializeShipmentForm({ view, onChange }) {
 			toast(
 				"Cambio guardado solo durante esta sesión. El almacenamiento no está disponible.",
 			)
-		$("#shipment-dialog").close()
+		$<HTMLDialogElement>("#shipment-dialog").close()
 		if (view === "overview" || view === "shipments") {
 			onChange()
 		} else {

@@ -1,6 +1,6 @@
-import { $ } from "@/scripts/utils/dom.js"
-let toastTimer
-export function toast(message) {
+import { $ } from "@/scripts/utils/dom.ts"
+let toastTimer: ReturnType<typeof setTimeout> | undefined
+export function toast(message: string) {
 	$("#toast").textContent = message
 	$("#toast").classList.add("visible")
 	clearTimeout(toastTimer)

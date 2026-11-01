@@ -1,6 +1,6 @@
 # Nexo · Prototipo logístico
 
-Interfaz en español con Astro, CSS y JavaScript sin dependencias de UI.
+Interfaz en español con Astro, CSS y TypeScript sin dependencias de UI.
 
 ## Ejecutar
 
@@ -42,3 +42,7 @@ Astro renderiza las seis rutas en el servidor con el adaptador de Node en modo s
 ## Producción
 
 `npm run build` genera el servidor. `npm start` ejecuta `dist/server/entry.mjs`. Puedes configurar la dirección y el puerto con las variables de entorno `HOST` y `PORT`. Node se gestiona con fnm.
+
+## Tipado
+
+TypeScript usa el modo estricto. Ejecuta npm run typecheck para comprobar los módulos y los componentes Astro. npm run build también comprueba los tipos antes de generar el servidor.

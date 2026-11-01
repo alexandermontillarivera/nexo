@@ -1,11 +1,12 @@
-export const drivers = [
+import type { Shipment } from "@/types/logistics"
+export const drivers: string[] = [
 	"Carlos Rodríguez",
 	"José Hernández",
 	"Pedro Ramírez",
 	"Luis Méndez",
 	"María Santos",
 ]
-export const seed = [
+export const seed: Shipment[] = [
 	{
 		id: "NX-1048",
 		client: "Grupo Ramos",

@@ -1,20 +1,22 @@
-import { initializeCatalogForm } from "@/scripts/catalog/form.js"
-import { $ } from "@/scripts/utils/dom.js"
-import { shipments } from "@/scripts/data/shipment-store.js"
-import { initializeIcons } from "@/scripts/ui/icons.js"
-import { initializeMobileNavigation } from "@/scripts/ui/mobile-navigation.js"
-import { initializeDialogs } from "@/scripts/ui/dialogs.js"
-import { toast } from "@/scripts/ui/toast.js"
-import { renderSummary } from "@/scripts/overview/summary.js"
-import { initializeOperationsTable } from "@/scripts/tables/operations.js"
-import { initializeShipmentDetail } from "@/scripts/shipments/detail.js"
-import { initializeShipmentForm } from "@/scripts/shipments/form.js"
+import { isView } from "@/types/logistics"
+import { initializeCatalogForm } from "@/scripts/catalog/form.ts"
+import { $ } from "@/scripts/utils/dom.ts"
+import { shipments } from "@/scripts/data/shipment-store.ts"
+import { initializeIcons } from "@/scripts/ui/icons.ts"
+import { initializeMobileNavigation } from "@/scripts/ui/mobile-navigation.ts"
+import { initializeDialogs } from "@/scripts/ui/dialogs.ts"
+import { toast } from "@/scripts/ui/toast.ts"
+import { renderSummary } from "@/scripts/overview/summary.ts"
+import { initializeOperationsTable } from "@/scripts/tables/operations.ts"
+import { initializeShipmentDetail } from "@/scripts/shipments/detail.ts"
+import { initializeShipmentForm } from "@/scripts/shipments/form.ts"
 
-let pageController
+let pageController: AbortController | undefined
 function initializePage() {
 	pageController?.abort()
 	pageController = new AbortController()
-	const view = document.body.dataset.view || "overview"
+	const candidateView = document.body.dataset.view
+	const view = isView(candidateView) ? candidateView : "overview"
 	const renderTable = initializeOperationsTable(view)
 	function refresh() {
 		renderTable()

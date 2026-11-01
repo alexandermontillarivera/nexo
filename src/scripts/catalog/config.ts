@@ -1,4 +1,5 @@
-export const catalogActions = {
+import type { CatalogView, CatalogAction } from "@/types/logistics"
+export const catalogActions: Record<CatalogView, CatalogAction> = {
 	fleet: {
 		label: "Nuevo camión",
 		title: "Registrar camión",

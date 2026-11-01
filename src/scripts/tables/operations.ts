@@ -1,15 +1,16 @@
-import { getCatalogRows } from "@/scripts/catalog/store.js"
-import { shipments } from "@/scripts/data/shipment-store.js"
-import { $ } from "@/scripts/utils/dom.js"
-import { buildOperationsTable } from "@/scripts/tables/model.js"
+import type { View, Refresh } from "@/types/logistics"
+import { getCatalogRows } from "@/scripts/catalog/store.ts"
+import { shipments } from "@/scripts/data/shipment-store.ts"
+import { $ } from "@/scripts/utils/dom.ts"
+import { buildOperationsTable } from "@/scripts/tables/model.ts"
 
-export function initializeOperationsTable(view) {
+export function initializeOperationsTable(view: View): Refresh {
 	let filter = "Todos",
 		query = ""
 	function render() {
-		$(".nav-count").textContent = shipments.length
+		$(".nav-count").textContent = String(shipments.length)
 		document
-			.querySelectorAll("[data-filter]")
+			.querySelectorAll<HTMLButtonElement>("[data-filter]")
 			.forEach((b) =>
 				b.classList.toggle("selected", b.dataset.filter === filter),
 			)
@@ -31,18 +32,23 @@ export function initializeOperationsTable(view) {
 			`${total} ${["overview", "shipments"].includes(view) ? "envíos" : "registros"}`
 	}
 
-	document.querySelectorAll("[data-filter]").forEach((button) =>
-		button.addEventListener("click", () => {
-			filter = button.dataset.filter
-			render()
-		}),
-	)
-	$("#search").addEventListener("input", (event) => {
-		query = event.target.value.toLowerCase().trim()
+	document
+		.querySelectorAll<HTMLButtonElement>("[data-filter]")
+		.forEach((button) =>
+			button.addEventListener("click", () => {
+				filter = button.dataset.filter || "Todos"
+				render()
+			}),
+		)
+	$<HTMLInputElement>("#search").addEventListener("input", () => {
+		query = $<HTMLInputElement>("#search").value.toLowerCase().trim()
 		render()
 	})
 	$(".tabs").hidden = !["overview", "shipments"].includes(view)
-	$("#search").placeholder = ["overview", "shipments"].includes(view)
+	$<HTMLInputElement>("#search").placeholder = [
+		"overview",
+		"shipments",
+	].includes(view)
 		? "Buscar envío…"
 		: "Buscar…"
 	return render

@@ -1,8 +1,11 @@
-import { $ } from "@/scripts/utils/dom.js"
+import { $ } from "@/scripts/utils/dom.ts"
 export function initializeDialogs() {
 	document
-		.querySelectorAll(".close-dialog")
-		.forEach((b) => (b.onclick = () => $("#shipment-dialog").close()))
+		.querySelectorAll<HTMLButtonElement>(".close-dialog")
+		.forEach(
+			(b) =>
+				(b.onclick = () => $<HTMLDialogElement>("#shipment-dialog").close()),
+		)
 	document.querySelectorAll("dialog").forEach((d) =>
 		d.addEventListener("click", (e) => {
 			if (e.target === d) {

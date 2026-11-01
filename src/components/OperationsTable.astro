@@ -1,6 +1,11 @@
 ---
-import { seed } from "@/scripts/data/demo.js"
-import { buildOperationsTable } from "@/scripts/tables/model.js"
+import { seed } from "@/scripts/data/demo.ts"
+import { buildOperationsTable } from "@/scripts/tables/model.ts"
+import type { View } from "@/types/logistics"
+interface Props {
+	overview?: boolean
+	view?: View
+}
 const { overview = false, view = overview ? "overview" : "shipments" } =
 	Astro.props
 const table = buildOperationsTable(view, seed)

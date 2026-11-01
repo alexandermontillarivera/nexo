@@ -5,18 +5,22 @@
 	"type": "module",
 	"scripts": {
 		"dev": "astro dev",
-		"build": "astro build",
+		"build": "astro check && astro build",
 		"preview": "astro preview",
 		"format": "prettier --write .",
 		"format:check": "prettier --check .",
-		"start": "node ./dist/server/entry.mjs"
+		"start": "node ./dist/server/entry.mjs",
+		"typecheck": "astro check"
 	},
 	"dependencies": {
 		"@astrojs/node": "11.1.9",
 		"astro": "7.4.4"
 	},
 	"devDependencies": {
+		"@astrojs/check": "0.9.12",
+		"@types/node": "26.6.6",
 		"prettier": "3.9.10",
-		"prettier-plugin-astro": "1.1.2"
+		"prettier-plugin-astro": "1.1.2",
+		"typescript": "6.0.3"
 	}
 }

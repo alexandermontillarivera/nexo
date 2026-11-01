@@ -1,8 +1,15 @@
 ---
 import "@/styles/global.css"
 import CatalogForm from "@/components/CatalogForm.astro"
-import { catalogActions } from "@/scripts/catalog/config.js"
+import { catalogActions } from "@/scripts/catalog/config.ts"
 import { ClientRouter } from "astro:transitions"
+import type { View } from "@/types/logistics"
+import { isCatalogView } from "@/types/logistics"
+interface Props {
+	view?: View
+	title?: string
+	subtitle?: string
+}
 const {
 	view = "overview",
 	title = "Todo en movimiento.",
@@ -24,7 +31,7 @@ const paths = {
 	routes: "/rutas",
 	goods: "/mercancias",
 }
-const nav = [
+const nav: [View, string, string][] = [
 	["overview", "Resumen", "grid"],
 	["shipments", "Envíos", "box"],
 	["fleet", "Flota", "truck"],
@@ -129,10 +136,15 @@ const nav = [
 					</div>
 					<button
 						class="primary"
-						id={catalogActions[view] ? "new-resource" : "new-shipment"}
+						id={
+							(isCatalogView(view) ? catalogActions[view] : undefined)
+								? "new-resource"
+								: "new-shipment"
+						}
 					>
 						<i data-icon="plus"></i>{" "}
-						{catalogActions[view]?.label || "Nuevo envío"}
+						{(isCatalogView(view) ? catalogActions[view] : undefined)?.label ||
+							"Nuevo envío"}
 					</button>
 				</div>
 				<slot />
@@ -287,7 +299,7 @@ const nav = [
 		</dialog>
 		<div class="toast" id="toast" role="status"></div>
 		<script>
-			import "@/scripts/app.js"
+			import "@/scripts/app.ts"
 		</script>
 	</body>
 </html>

@@ -1,13 +1,16 @@
-import { $ } from "@/scripts/utils/dom.js"
-import { catalogActions } from "@/scripts/catalog/config.js"
-import { getCatalogRows, addCatalogRow } from "@/scripts/catalog/store.js"
-import { toast } from "@/scripts/ui/toast.js"
+import { isCatalogView } from "@/types/logistics"
+import type { View, Refresh, CatalogRow } from "@/types/logistics"
+import { $, formValues } from "@/scripts/utils/dom.ts"
+import { catalogActions } from "@/scripts/catalog/config.ts"
+import { getCatalogRows, addCatalogRow } from "@/scripts/catalog/store.ts"
+import { toast } from "@/scripts/ui/toast.ts"
 
-export function initializeCatalogForm(view, onChange) {
+export function initializeCatalogForm(view: View, onChange: Refresh) {
+	if (!isCatalogView(view)) return
 	const action = catalogActions[view]
 	if (!action) return
-	const dialog = $("#catalog-dialog")
-	const form = $("#catalog-form")
+	const dialog = $<HTMLDialogElement>("#catalog-dialog")
+	const form = $<HTMLFormElement>("#catalog-form")
 	$("#new-resource").addEventListener("click", () => {
 		form.reset()
 		$("#catalog-error").textContent = ""
@@ -18,16 +21,14 @@ export function initializeCatalogForm(view, onChange) {
 		.forEach((button) => button.addEventListener("click", () => dialog.close()))
 	form.addEventListener("submit", (event) => {
 		event.preventDefault()
-		const data = Object.fromEntries(
-			[...new FormData(form)].map(([key, value]) => [key, value.trim()]),
-		)
-		const fail = (message) => {
+		const data = formValues(form)
+		const fail = (message: string) => {
 			$("#catalog-error").textContent = message
 		}
 		if (action.fields.some((field) => !field.optional && !data[field.name]))
 			return fail("Completa todos los campos obligatorios.")
 		const existing = getCatalogRows(view)
-		let row
+		let row: CatalogRow | undefined
 		if (view === "fleet") {
 			data.unit = data.unit.toUpperCase()
 			if (!/^NX-\d{3,}$/.test(data.unit))
@@ -88,6 +89,7 @@ export function initializeCatalogForm(view, onChange) {
 				data.type,
 				data.handling,
 			]
+		if (!row) return
 		const saved = addCatalogRow(view, row)
 		form.reset()
 		dialog.close()

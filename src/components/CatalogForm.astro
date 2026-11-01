@@ -1,7 +1,12 @@
 ---
-import { catalogActions } from "@/scripts/catalog/config.js"
+import { catalogActions } from "@/scripts/catalog/config.ts"
+import type { View } from "@/types/logistics"
+import { isCatalogView } from "@/types/logistics"
+interface Props {
+	view: View
+}
 const { view } = Astro.props
-const action = catalogActions[view]
+const action = isCatalogView(view) ? catalogActions[view] : undefined
 ---
 
 {action && (

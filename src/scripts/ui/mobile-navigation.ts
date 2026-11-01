@@ -1,7 +1,7 @@
-import { $ } from "@/scripts/utils/dom.js"
+import { $ } from "@/scripts/utils/dom.ts"
 
-export function initializeMobileNavigation(signal) {
-	const drawer = $("#mobile-menu")
+export function initializeMobileNavigation(signal: AbortSignal) {
+	const drawer = $<HTMLDialogElement>("#mobile-menu")
 	const trigger = $("#open-mobile-menu")
 	const close = () => {
 		if (drawer.open) drawer.close()

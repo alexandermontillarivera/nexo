@@ -1,18 +1,18 @@
-import { badge, time, date, route } from "@/scripts/utils/format.js"
-import { shipments } from "@/scripts/data/shipment-store.js"
-import { $, escapeHTML } from "@/scripts/utils/dom.js"
-import { drivers } from "@/scripts/data/demo.js"
+import { time, date, route } from "@/scripts/utils/format.ts"
+import { shipments } from "@/scripts/data/shipment-store.ts"
+import { $, escapeHTML } from "@/scripts/utils/dom.ts"
+import { drivers } from "@/scripts/data/demo.ts"
 
 export function renderSummary() {
-	if (!$("#overview")) return
+	if (!document.querySelector("#overview")) return
 	{
-		$("#active-count").textContent = shipments.filter(
-			(s) => s.status !== "Entregado",
-		).length
-		$("#delivered-count").textContent = shipments.filter(
-			(s) => s.status === "Entregado",
-		).length
-		$(".nav-count").textContent = shipments.length
+		$("#active-count").textContent = String(
+			shipments.filter((s) => s.status !== "Entregado").length,
+		)
+		$("#delivered-count").textContent = String(
+			shipments.filter((s) => s.status === "Entregado").length,
+		)
+		$(".nav-count").textContent = String(shipments.length)
 		const departures = shipments
 			.filter((s) => s.status === "Programado")
 			.sort((a, b) => a.departure.localeCompare(b.departure))

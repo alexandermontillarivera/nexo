@@ -1,13 +1,22 @@
-import { badge, time, date, route } from "@/scripts/utils/format.js"
-import { escapeHTML } from "@/scripts/utils/dom.js"
-import { drivers } from "@/scripts/data/demo.js"
+import type {
+	View,
+	Shipment,
+	TableOptions,
+	OperationsTable,
+	CatalogRow,
+} from "@/types/logistics"
+import { badge, time, date, route } from "@/scripts/utils/format.ts"
+import { escapeHTML } from "@/scripts/utils/dom.ts"
+import { drivers } from "@/scripts/data/demo.ts"
 
 export function buildOperationsTable(
-	view,
-	shipments,
-	{ filter = "Todos", query = "", catalogRows = [] } = {},
-) {
-	let heads, rows, total
+	view: View,
+	shipments: Shipment[],
+	{ filter = "Todos", query = "", catalogRows = [] }: TableOptions = {},
+): OperationsTable {
+	let heads: string[] = [],
+		rows: string[] = [],
+		total = 0
 	if (["overview", "shipments"].includes(view)) {
 		const data = shipments.filter(
 			(s) =>
@@ -31,7 +40,7 @@ export function buildOperationsTable(
 				`<tr><td><strong>${escapeHTML(s.id)}</strong><small>${escapeHTML(s.client)}</small></td><td>${route(s)}</td><td>${escapeHTML(drivers[s.driver])}<small>Camión NX-00${s.driver + 1}</small></td><td>${badge(s.status)}</td><td>${time(s.arrival)}<small>${date(s.arrival)}</small></td><td><button class="row-button" data-detail="${escapeHTML(s.id)}" aria-label="Ver detalle de ${escapeHTML(s.id)}">↗</button></td></tr>`,
 		)
 	} else {
-		let data = []
+		let data: CatalogRow[] = []
 		if (view === "fleet") {
 			heads = ["Unidad", "Modelo", "Capacidad", "Estado"]
 			data = Array.from({ length: 8 }, (_, i) => {
